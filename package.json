@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "cypress": "^12.12.0"
+  },
+  "name": "cypress-shopping-cart",
+  "description": "E2E Tests using Cypress and Javascript for a Shopping Cart app.",
+  "version": "1.0.0",
+  "main": "cypress.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
