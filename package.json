@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@testing-library/cypress": "^9.0.0",
     "cypress": "^12.12.0"
   },
   "name": "cypress-shopping-cart",
@@ -7,8 +8,12 @@
   "version": "1.0.0",
   "main": "cypress.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cypress run",
+    "headed-test": "npm run test --headed"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cypress-real-events": "^1.8.1"
+  }
 }
