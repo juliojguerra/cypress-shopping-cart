@@ -1,27 +1,49 @@
 /// <reference types="Cypress" />
+import HomePage from "../pageobjects/HomePage";
+import ProductsPage from "../pageobjects/ProductsPage";
 
 describe("Shopping Cart E2E", function () {
   it("Search and Shop an item", function () {
-    cy.intercept(
-      "GET",
-      "**/pub/static/version*/frontend/Magento/luma/en_US/Magento_Checkout/template/minicart/content.html"
-    ).as("getContent");
+    Cypress.config("defaultCommandTimeout", 7000);
+    const data = {
+      productName: "Typhon Performance Fleece-lined Jacket",
+      gender: "Men",
+      zone: "Tops",
+      category: "Jackets",
+    };
 
-    cy.visit(Cypress.env("url"));
+    const homePage = new HomePage();
 
-    cy.wait("@getContent").its("response.statusCode").should("eq", 200);
+    homePage.visitHomePage();
+    homePage.selectCategory(data.gender, data.zone, data.category);
 
-    // Wait until the 'Men' item is visible and interactive
-    cy.findByText("Men")
-      .should("be.visible")
-      .then(($men) => {
-        cy.wrap($men).trigger("mouseover");
-        // Now the "Men" dropdown should be displayed. You can interact with the items here
-        //cy.contains("Tops").should("be.visible").click();
-        //cy.contains("Tops").trigger("mouseover", { force: true });
-        //cy.contains("Tops").realHover();
-        cy.get("#ui-id-17").realHover();
-        cy.get("#ui-id-19").click({ force: true });
+    const productsPage = new ProductsPage();
+
+    productsPage.getTitle((title) => {
+      expect(title).to.contain(data.category);
+    });
+
+    cy.get(".product-item").should("be.visible");
+
+    cy.wait("@getContent").then(() => {
+      const productName = "Typhon Performance Fleece-lined Jacket";
+
+      cy.get(".product-item").each((productCard, index, list) => {
+        if (productCard.text().includes(productName)) {
+          cy.log(productCard);
+          cy.wrap(productCard)
+            .realHover({ position: "bottomLeft" })
+            .within(() => {
+              cy.get(".action.tocart.primary")
+                .invoke("removeAttr", "style")
+                .click({ force: true });
+            });
+        }
       });
+
+      cy.get(".base").contains(productName).should("be.visible");
+    });
+
+    cy.pause();
   });
 });
