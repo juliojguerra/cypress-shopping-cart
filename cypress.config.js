@@ -12,4 +12,7 @@ module.exports = defineConfig({
   env: {
     url: "https://magento.softwaretestingboard.com",
   },
+
+  viewportWidth: 1240,
+  viewportHeight: 860,
 });
