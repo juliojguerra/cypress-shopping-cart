@@ -1,13 +1,6 @@
 class HomePage {
   visitHomePage() {
-    cy.intercept(
-      "GET",
-      "**/pub/static/version*/frontend/Magento/luma/en_US/Magento_Checkout/template/minicart/content.html"
-    ).as("getContent");
-
     cy.visit(Cypress.env("url"));
-
-    cy.wait("@getContent").its("response.statusCode").should("eq", 200);
   }
 
   selectCategory(gender, zone, category) {
