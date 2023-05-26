@@ -16,5 +16,11 @@ class ProductsPage {
       }
     });
   }
+
+  expectTitleToInclude(category) {
+    this.getTitle((title) => {
+      expect(title).to.contain(category);
+    });
+  }
 }
 export default ProductsPage;
