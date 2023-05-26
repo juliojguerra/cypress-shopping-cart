@@ -3,6 +3,10 @@ class ProductDetailPage {
     this.productTitle().invoke("text").then(callback);
   }
 
+  checkout() {
+    cy.get("#top-cart-btn-checkout").click();
+  }
+
   expectPathToInclude(str, timeout) {
     cy.location({ timeout: timeout }).should((location) => {
       expect(location.pathname).to.include(str);
@@ -16,12 +20,20 @@ class ProductDetailPage {
     this.cartButton().should("be.visible");
   }
 
+  expectSuccessAlert(productName) {
+    cy.get(".message-success").should("contain", `You added ${productName}`);
+  }
+
+  expectProductDetailsToInclude(productName) {
+    cy.get(".product-item-details").should("contain", productName);
+  }
+
   selectSize(size) {
     return this.productSize().contains(size).click();
   }
 
-  selectColor(color) {
-    return cy.get(`[aria-label='${color}']`).click();
+  selectColor() {
+    return this.firstColor().click();
   }
 
   enterQuantity(qty) {
@@ -46,6 +58,10 @@ class ProductDetailPage {
 
   productColors() {
     return cy.get(".swatch-attribute.color > .swatch-attribute-options");
+  }
+
+  firstColor() {
+    return cy.get(".swatch-option.color:nth-child(1)");
   }
 
   productFieldset() {
